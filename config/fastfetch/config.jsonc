@@ -1,7 +1,7 @@
 {
   "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
   "logo": {
-    "source": "/home/tt/Pictures/vxa/flp_fav_rb.png",
+    "source": "[set icon]",
     "height": 18
   },
   "display": {
@@ -23,16 +23,6 @@
     "memory",
     "swap",
     "disk",
-    {
-      "type": "command",
-      "key": "Network Share (/mnt/tt-s1)",
-      "text": "/home/tt/scripts/showtts1.sh"
-    },
-    {
-      "type": "command",
-      "key": "Network Share (/mnt/tt-s2)",
-      "text": "/home/tt/scripts/showtts2.sh"
-    },
     "localip",
     "break"
   ]
