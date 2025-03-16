@@ -1,0 +1,104 @@
+{
+    "layer": "top", // Waybar at top layer
+    "position": "top", // Waybar at the bottom of your screen
+    "height": 24, // Waybar height
+    // "width": 1366, // Waybar width
+    // Choose the order of the modules
+    "modules-left": ["custom/archicon", "hyprland/workspaces", "hyprland/mode", "custom/spotify"],
+    "modules-center": ["clock"],
+    "modules-right": ["pulseaudio", "network", "cpu", "memory", "temperature", "temperature#gpu", "tray"],
+    "hyprland/workspaces": {
+        "disable-scroll": true,
+        "all-outputs": false,
+        "format": "{name}",
+        "format-icons": {
+            "1:web": "",
+            "2:code": "",
+            "3:term": "",
+            "4:work": "",
+            "5:music": "",
+            "6:docs": "",
+            "urgent": "",
+            "focused": "",
+            "default": ""
+        }
+    },
+    "custom/separator#right_slant": {
+    "format": "",
+    "interval": "once",
+    "tooltip": false
+  },
+  "custom/separator#left_slant": {
+    "format": "🭅",
+    "interval": "once",
+    "tooltip": false
+  },
+    "custom/archicon":{
+        "format": "󰣇",
+        "tooltip": false,
+        "on-click": "wofi -i --show drun"
+    },
+    "hyprland/mode": {
+        "format": "<span style=\"italic\">{}</span>"
+    },
+    "tray": {
+        // "icon-size": 21,
+        "spacing": 10
+    },
+    "clock": {
+        "format-alt": "{:%Y-%m-%d}"
+    },
+    "cpu": {
+        "format": "{usage}% "
+    },
+    "memory": {
+        "format": "{}%  "
+    },
+    "network": {
+        // "interface": "wlp2s0", // (Optional) To force the use of this interface
+        "format-wifi": "{essid} ({signalStrength}%) ",
+        "format-ethernet": "{ifname}: {ipaddr}/{cidr} ",
+        "format-disconnected": "Disconnected ⚠"
+    },
+    "pulseaudio": {
+        //"scroll-step": 1,
+        "format": "{volume}% {icon}",
+        "format-bluetooth": "{volume}% {icon}",
+        "format-muted": "",
+        "format-icons": {
+            "headphones": "",
+            "handsfree": "",
+            "headset": "",
+            "phone": "",
+            "portable": "",
+            "car": "",
+            "default": ["", ""]
+        },
+        "on-click": "pavucontrol"
+    },
+    "temperature": {
+    // "thermal-zone": 2,
+        "hwmon-path": "/sys/class/hwmon/hwmon4/temp3_input",
+        "input-filename": "temp3_input",
+        "critical-threshold": 80,
+        // "format-critical": "{temperatureC}°C {icon}",
+        "format": "CPU {temperatureC}°C {icon}",
+        "format-icons": ["", "", ""]
+    },
+    "temperature#gpu": {
+        // "thermal-zone": 2,
+        "hwmon-path": "/sys/class/hwmon/hwmon3/temp2_input",
+        "input-filename": "temp2_input",
+        "critical-threshold": 80,
+        // "format-critical": "{temperatureC}°C {icon}",
+        "format": "GPU {temperatureC}°C {icon}",
+        "format-icons": ["", "", ""]
+    },
+    "custom/spotify": {
+        "format": " {}",
+        "max-length": 40,
+        "interval": 30, // Remove this if your script is endless and write in loop
+        "exec": "$HOME/.config/waybar/mediaplayer.sh 2> /dev/null", // Script in resources folder
+        "exec-if": "pgrep spotify"
+    }
+}
