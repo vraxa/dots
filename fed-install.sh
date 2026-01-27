@@ -79,7 +79,7 @@ fi
 
 # Enable Copr repo for clipse
 log "Enabling Copr repository for clipse..."
-sudo dnf copr enable -y atim/clipse || warning "Failed to enable clipse Copr repo"
+sudo dnf copr enable -y azandure/clipse || warning "Failed to enable clipse Copr repo"
 
 # Install core dependencies first
 log "Installing core system dependencies..."
@@ -127,8 +127,7 @@ sudo dnf install -y \
     playerctl \
     grim \
     slurp \
-    wl-clipboard \
-    nwg-look
+    wl-clipboard
 
 # Install audio system
 log "Installing audio system..."
@@ -172,15 +171,7 @@ fi
 
 # Install clipboard manager
 log "Installing clipse clipboard manager..."
-if ! sudo dnf install -y clipse; then
-    log "Installing clipse from GitHub releases..."
-    CLIPSE_VERSION=$(curl -s https://api.github.com/repos/savedra1/clipse/releases/latest | grep "tag_name" | cut -d '"' -f 4)
-    wget -O /tmp/clipse.tar.gz "https://github.com/savedra1/clipse/releases/download/${CLIPSE_VERSION}/clipse-${CLIPSE_VERSION}-linux-amd64.tar.gz"
-    tar -xzf /tmp/clipse.tar.gz -C /tmp
-    sudo mv /tmp/clipse /usr/local/bin/
-    sudo chmod +x /usr/local/bin/clipse
-    rm /tmp/clipse.tar.gz
-fi
+sudo dnf install -y clipse || warning "clipse installation failed - check if azandure/clipse copr is enabled"
 
 # Install fonts
 log "Installing fonts..."
