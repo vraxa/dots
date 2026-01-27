@@ -77,6 +77,10 @@ if ! dnf list available hyprland &>/dev/null; then
     fi
 fi
 
+# Enable Copr repo for clipse
+log "Enabling Copr repository for clipse..."
+sudo dnf copr enable -y atim/clipse || warning "Failed to enable clipse Copr repo"
+
 # Install core dependencies first
 log "Installing core system dependencies..."
 sudo dnf install -y \
@@ -102,8 +106,12 @@ sudo dnf install -y hyprland || {
 
 # Try to install additional hypr tools
 log "Installing additional Hyprland tools..."
-for pkg in hyprlock hyprpaper xdg-desktop-portal-hyprland; do
-    sudo dnf install -y "$pkg" || warning "$pkg not available in repositories"
+sudo dnf install -y xdg-desktop-portal-hyprland || warning "xdg-desktop-portal-hyprland not available"
+
+# These might not be packaged for Fedora yet
+log "Attempting to install additional Hyprland components..."
+for pkg in hyprlock hyprpaper; do
+    sudo dnf install -y "$pkg" || warning "$pkg not available (may need manual installation)"
 done
 
 # Install window manager and desktop essentials
@@ -148,15 +156,24 @@ sudo dnf install -y \
 
 # Install media and screenshot tools  
 log "Installing media and screenshot tools..."
-sudo dnf install -y \
-    satty \
-    cava
+sudo dnf install -y cava
+
+# Try to install satty, fallback to manual installation if needed
+log "Installing satty screenshot editor..."
+if ! sudo dnf install -y satty; then
+    warning "satty not available in repositories, trying manual installation..."
+    if command -v cargo &> /dev/null; then
+        log "Installing satty via cargo..."
+        cargo install satty
+    else
+        warning "satty installation failed - install cargo or compile manually"
+    fi
+fi
 
 # Install clipboard manager
 log "Installing clipse clipboard manager..."
-if ! command -v clipse &> /dev/null; then
-    # Install clipse from GitHub releases if not in repos
-    log "Installing clipse from GitHub..."
+if ! sudo dnf install -y clipse; then
+    log "Installing clipse from GitHub releases..."
     CLIPSE_VERSION=$(curl -s https://api.github.com/repos/savedra1/clipse/releases/latest | grep "tag_name" | cut -d '"' -f 4)
     wget -O /tmp/clipse.tar.gz "https://github.com/savedra1/clipse/releases/download/${CLIPSE_VERSION}/clipse-${CLIPSE_VERSION}-linux-amd64.tar.gz"
     tar -xzf /tmp/clipse.tar.gz -C /tmp
