@@ -199,8 +199,12 @@ flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flat
 # Install applications referenced in startup config
 log "Installing applications from startup config..."
 
-# Steam (gaming)
-sudo dnf install -y steam
+# Steam (gaming) - try RPM Fusion first, fallback to Flatpak
+log "Installing Steam..."
+if ! sudo dnf install -y steam; then
+    log "Steam not available via DNF, installing via Flatpak..."
+    flatpak install -y flathub com.valvesoftware.Steam || warning "Steam installation failed"
+fi
 
 # Spotify (music)
 flatpak install -y flathub com.spotify.Client || warning "Spotify flatpak install failed"
