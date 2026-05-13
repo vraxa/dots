@@ -293,11 +293,7 @@ pacman_install \
 log "Installing themes and appearance..."
 pacman_install \
     gtk3 \
-    gtk4 \
-    arc-gtk-theme \
-    arc-icon-theme \
-    papirus-icon-theme \
-    numix-icon-theme
+    gtk4
 
 # Adwaita is part of gtk3/gtk4 on Arch
 
